@@ -5,18 +5,32 @@ using UnityEngine;
 public class UISwitchGroup : MonoBehaviour
 {
     public List<UISwitch> switches = new List<UISwitch>();
+    public int currentIndex;
+    
+    public GameObject messageReceiver;
+    public string methodName = "openTokenForEditing";
 
     public void SwitchStates(int index)
     {
-        SwitchAllOff();
+        currentIndex = index;
+        SwitchAllTo(false);
+        switches[index].SwitchState();
+    }
+    
+    public void SwitchStates(int index, bool state)
+    {
+        currentIndex = index;
+        SwitchAllTo(state);
         switches[index].SwitchState();
     }
 
-    public void SwitchAllOff()
+    public void SwitchAllTo(bool state)
     {
         foreach (var varSwitch in switches)
         {
-            varSwitch.SwitchState(false);
+            varSwitch.SwitchState(state);
         }
+        
+        if(messageReceiver != null) messageReceiver.SendMessage(methodName);
     }
 }

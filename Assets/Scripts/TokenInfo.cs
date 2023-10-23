@@ -22,6 +22,13 @@ public class TokenInfo : MonoBehaviour
         if (newAbility != " ") ability = newAbility;
         UpdateVisuals();
     }
+    
+    public void EditTokenInfo(string info)
+    {
+        if (info[0] != ' ') shape = info[0].ToString();
+        if (info[1] != ' ') ability = info[1].ToString();
+        UpdateVisuals();
+    }
 
     private void UpdateVisuals()
     {
