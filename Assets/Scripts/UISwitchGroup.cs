@@ -33,4 +33,12 @@ public class UISwitchGroup : MonoBehaviour
         
         if(messageReceiver != null) messageReceiver.SendMessage(methodName);
     }
+    
+    public void SwitchAllToNoMSG(bool state)
+    {
+        foreach (var varSwitch in switches)
+        {
+            varSwitch.SwitchState(state);
+        }
+    }
 }
