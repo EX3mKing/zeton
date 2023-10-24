@@ -18,5 +18,6 @@ public class GlobalFunctions : MonoBehaviour
     public static void QuitGame()
     {
         Application.Quit();
+        Debug.LogWarning("Quit Game");
     }
 }
