@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+[RequireComponent(typeof(DeckInfoPanel))]
 public class DeckBuilder : MonoBehaviour
 {
+    private DeckInfoPanel _deckInfoPanel;
+    
     [SerializeField] private GameObject tokenFitter;
     [SerializeField] private UISwitchGroup tokenSwitchGroup;
     [SerializeField] private GameObject tokenInfoPrefab;
@@ -25,6 +27,12 @@ public class DeckBuilder : MonoBehaviour
     public int startPoints = 30;
     public int points = 0;
     
+    public List<GameObject> canvasDeckBuilderObjects;
+    public GameObject canvasDeckPicker;
+
+    public TMP_InputField deckNameInputField;
+    public GameObject addNewTokenButton;
+    
     //symbol name       name  symbol     cost     
     //  O   none,        none    0        0
     //  A   square,      alro    1        1
@@ -36,6 +44,7 @@ public class DeckBuilder : MonoBehaviour
     private void Start()
     {
         UpdatePoints();
+        _deckInfoPanel = gameObject.GetComponent<DeckInfoPanel>();
     }
     
     private Dictionary<string, int> shapeDict = new Dictionary<string, int>()
@@ -84,6 +93,27 @@ public class DeckBuilder : MonoBehaviour
         
         UpdatePoints();
     }
+    
+    public void AddNewToken (string shape, string ability)
+    {
+        GameObject token = Instantiate(tokenInfoPrefab, tokenFitter.transform);
+        
+        TokenInfo ti = token.GetComponent<TokenInfo>();
+        ti.index = tokens.Count;
+        ti.EditTokenInfo(shape, ability);
+        tokens.Add(ti);
+        
+        UISwitch tokenSwitch = token.transform.GetChild(0).GetComponent<UISwitch>();
+        tokenSwitchGroup.switches.Add(tokenSwitch);
+        tokenSwitch.switchGroup = tokenSwitchGroup;
+        tokenSwitch.groupIndex = ti.index;
+
+        tokenSwitchGroup.SwitchStates(ti.index);
+        token.transform.SetAsLastSibling();
+        
+        UpdatePoints();
+    }
+    
 
     public void openTokenForEditing()
     {
@@ -136,35 +166,80 @@ public class DeckBuilder : MonoBehaviour
         pointsConfirmButton.SetActive(canConfirmDeck);
     }
 
-    public void RemoveCurrentToken()
+    public void RemoveAllTokens()
     {
-        Destroy(tokens[tokenSwitchGroup.currentIndex].gameObject);
+        foreach (var token in tokens) { Destroy(token.gameObject); }
+        tokens.Clear();
         
-        tokens.RemoveAt(tokenSwitchGroup.currentIndex);
-        tokenSwitchGroup.switches.RemoveAt(tokenSwitchGroup.currentIndex);
-        
+        tokenSwitchGroup.switches.Clear();
         tokenSwitchGroup.currentIndex = 0;
+        
         shapeSwitchGroup.SwitchAllToNoMSG(false);
         abilitySwitchGroup.SwitchAllToNoMSG(false);
         tokenSwitchGroup.SwitchAllToNoMSG(false);
         
         Hide3DShapesAndTokens();
         UpdatePoints();
+    }
 
+    public void RemoveCurrentToken()
+    {
+        Destroy(tokens[tokenSwitchGroup.currentIndex].gameObject);
+        tokens.RemoveAt(tokenSwitchGroup.currentIndex);
+        tokenSwitchGroup.switches.RemoveAt(tokenSwitchGroup.currentIndex);
+
+        shapeSwitchGroup.SwitchAllToNoMSG(false);
+        abilitySwitchGroup.SwitchAllToNoMSG(false);
+        tokenSwitchGroup.SwitchAllToNoMSG(false);
+        
         for (int i = 0; i < tokens.Count; i++)
         {
             tokens[i].index = i;
             tokenSwitchGroup.switches[i].groupIndex = i;
         }
+        
+        tokenSwitchGroup.SwitchStates(tokens.Count - 1);
+
+        openTokenForEditing();
+        UpdatePoints();
     }
+    
+    // FIRST GOES SHAPE THAN ABILITY
+    // example SA:SA:SA -> A1:B2:C3
 
     public void ConfirmDeck()
     {
         string finalOutcome = "";
         foreach (var token in tokens)
         {
-            finalOutcome += token.shape + token.ability;
+            finalOutcome += token.shape + token.ability + ':';
         }
+        finalOutcome = finalOutcome.Remove(finalOutcome.Length - 1, 1);
+        _deckInfoPanel.currentDeckInfo.deckInfoString = finalOutcome;
+        string[] infos = _deckInfoPanel.currentDeckInfo.deckInfoString.Split(':');
+        _deckInfoPanel.currentDeckInfo.deckValidity = points == 0;
         Debug.LogWarning(finalOutcome);
+    }
+
+    public void SaveDeckName()
+    {
+        _deckInfoPanel.currentDeckInfo.deckName = deckNameInputField.text;
+        _deckInfoPanel.currentDeckInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _deckInfoPanel.currentDeckInfo.deckName;
+    }
+
+    public void OpenDeckBuilder()
+    {
+        if (_deckInfoPanel.currentDeckInfo == null) return;
+        RemoveAllTokens();
+        deckNameInputField.text = _deckInfoPanel.currentDeckInfo.deckName;
+        canvasDeckPicker.SetActive(false);
+        foreach (var obj in canvasDeckBuilderObjects) { obj.SetActive(true); }
+        string[] deckInfo = _deckInfoPanel.currentDeckInfo.deckInfoString.Split(':');
+        if (deckInfo.Length <= 1) return;
+        foreach (var info in deckInfo)
+        {
+            AddNewToken(info[0].ToString(), info[1].ToString());
+        }
+        addNewTokenButton.transform.SetAsLastSibling();
     }
 }
