@@ -2197,6 +2197,7 @@ MonoBehaviour:
   deckName: Derin
   deckInfoString: 
   deckValidity: 0
+  deckFileName: Derin
 --- !u!1 &174389115
 GameObject:
   m_ObjectHideFlags: 0
@@ -2659,6 +2660,7 @@ MonoBehaviour:
   deckName: Atekon
   deckInfoString: D3:A5
   deckValidity: 0
+  deckFileName: Atekon
 --- !u!1 &194885983
 GameObject:
   m_ObjectHideFlags: 0
@@ -4708,6 +4710,7 @@ MonoBehaviour:
   deckName: Frigo
   deckInfoString: 
   deckValidity: 0
+  deckFileName: Frigo
 --- !u!1 &387773696
 GameObject:
   m_ObjectHideFlags: 0
@@ -6277,6 +6280,7 @@ MonoBehaviour:
   deckName: Giire
   deckInfoString: 
   deckValidity: 0
+  deckFileName: Giire
 --- !u!1 &475986284
 GameObject:
   m_ObjectHideFlags: 0
@@ -7454,6 +7458,7 @@ MonoBehaviour:
   pointsText: {fileID: 409869792}
   pointsActualText: {fileID: 562112280}
   pointsConfirmButton: {fileID: 1190552317}
+  maxTokenNumber: 20
   startPoints: 30
   points: 0
   canvasDeckBuilderObjects:
@@ -7513,6 +7518,14 @@ MonoBehaviour:
   - {fileID: 1742408221}
   - {fileID: 1674903638}
   currentDeckInfo: {fileID: 0}
+  deckInfos:
+  - {fileID: 190345910}
+  - {fileID: 2130647956}
+  - {fileID: 1571693161}
+  - {fileID: 172053285}
+  - {fileID: 1111826317}
+  - {fileID: 379475543}
+  - {fileID: 467690776}
 --- !u!1 &659147070
 GameObject:
   m_ObjectHideFlags: 0
@@ -10146,7 +10159,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894284917}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &894284919
 Camera:
   m_ObjectHideFlags: 0
@@ -12825,6 +12838,7 @@ MonoBehaviour:
   deckName: Embada
   deckInfoString: 
   deckValidity: 0
+  deckFileName: Embada
 --- !u!1 &1125135995
 GameObject:
   m_ObjectHideFlags: 0
@@ -15592,13 +15606,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 611761251}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 611761252}
+        m_TargetAssemblyTypeName: DeckBuilder, Assembly-CSharp
+        m_MethodName: SaveDeckName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -17443,6 +17457,7 @@ MonoBehaviour:
   deckName: Centa
   deckInfoString: 
   deckValidity: 0
+  deckFileName: Centa
 --- !u!1 &1587383197
 GameObject:
   m_ObjectHideFlags: 0
@@ -18107,50 +18122,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661992602}
   m_CullTransparentMesh: 1
---- !u!1 &1662099492
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1662099495}
-  - component: {fileID: 1662099493}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1662099493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662099492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bad243f2caa00744bd195a0b0049afd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1662099495
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662099492}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1663154533
 GameObject:
   m_ObjectHideFlags: 0
@@ -23391,6 +23362,7 @@ MonoBehaviour:
   deckName: Biore
   deckInfoString: 
   deckValidity: 0
+  deckFileName: Biore
 --- !u!1 &2134976795
 GameObject:
   m_ObjectHideFlags: 0
@@ -23810,6 +23782,67 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3953293429106522606}
   m_Mesh: {fileID: -6212218533069498040, guid: 717efc032996e2a46864b3c034e5b9da, type: 3}
+--- !u!1001 &1169362887397978606
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1234580453109788343, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943242463483902200, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e76af03ab6a8f994dbf0c01b68f42994, type: 3}
 --- !u!33 &1691916616243921503
 MeshFilter:
   m_ObjectHideFlags: 0

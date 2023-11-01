@@ -7,4 +7,5 @@ public class DeckInfo : MonoBehaviour
     public string deckName;
     public string deckInfoString;
     public bool deckValidity;
+    public string deckFileName;
 }

@@ -14,9 +14,13 @@ public class DeckInfoPanel : MonoBehaviour
     public List<GameObject> tokens = new List<GameObject>();
     public DeckInfo currentDeckInfo;
 
+    public List<DeckInfo> deckInfos = new List<DeckInfo>();
+
     private void Start()
     {
         _deckBuilder = gameObject.GetComponent<DeckBuilder>();
+        CreateInitialSaveFiles();
+        LoadDeckInfos();
     }
 
     public void OpenDeckInfo(DeckInfo info)
@@ -26,7 +30,7 @@ public class DeckInfoPanel : MonoBehaviour
         HideTokens();
         string[] tokenInfo = info.deckInfoString.Split(':');
         
-        if (tokenInfo.Length <= 1) return;
+        if (tokenInfo[0].Length == 0) return;
         for (int i = 0; i < tokenInfo.Length; i++)
         {
             tokens[i].SetActive(true);
@@ -48,6 +52,7 @@ public class DeckInfoPanel : MonoBehaviour
     {
         currentDeckInfo.deckName = InputField.text;
         currentDeckInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentDeckInfo.deckName;
+        SaveSystem.SaveData(new SaveFile(currentDeckInfo), currentDeckInfo.deckFileName);
     }
 
     public void OpenDeckInfo()
@@ -55,5 +60,40 @@ public class DeckInfoPanel : MonoBehaviour
         _deckBuilder.canvasDeckBuilderObjects.ForEach(obj => obj.SetActive(false));
         _deckBuilder.canvasDeckPicker.SetActive(true);
         OpenDeckInfo(currentDeckInfo);
+    }
+
+    // load info from file
+    public void LoadDeckInfos()
+    {
+        foreach (var info in deckInfos)
+        {
+            var file = SaveSystem.LoadData<SaveFile>(info.deckFileName);
+            
+            if (file == null)
+            {
+                Debug.LogWarning("SAVE FILE NOT FOUND");
+                continue;
+            }
+            
+            info.deckInfoString = file.deckTokenString;
+            info.deckName = file.deckName;
+            info.deckValidity = file.deckValidity;
+
+            info.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = info.deckName;
+        }
+    }
+
+    public void CreateInitialSaveFiles()
+    {
+        foreach (var info in deckInfos)
+        {
+            if (SaveSystem.LoadData<SaveFile>(info.deckFileName) != null) continue;
+            SaveSystem.SaveData(new SaveFile(info), info.deckFileName);
+        }
+    }
+    
+    public void SaveCurrentDeckInfo()
+    {
+        SaveSystem.SaveData(new SaveFile(currentDeckInfo), currentDeckInfo.deckFileName);
     }
 }

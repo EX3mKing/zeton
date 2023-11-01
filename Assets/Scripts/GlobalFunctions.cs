@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,22 @@ public class GlobalFunctions : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
-    
-    public static void LoadScene(int index)
+
+    public IEnumerator LoadScene(string sceneName, float time)
     {
-        SceneManager.LoadScene(index);
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public static void LoadScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
+    }
+    
+    public IEnumerator LoadScene(int sceneIndex, float time)
+    {
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene(sceneIndex);
     }
     
     public static void QuitGame()

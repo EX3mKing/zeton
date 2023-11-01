@@ -9,6 +9,7 @@ public class DeckBuilder : MonoBehaviour
 {
     private DeckInfoPanel _deckInfoPanel;
     
+    [Header("CONTAINERS FOR TOKENS")]
     [SerializeField] private GameObject tokenFitter;
     [SerializeField] private UISwitchGroup tokenSwitchGroup;
     [SerializeField] private GameObject tokenInfoPrefab;
@@ -20,13 +21,16 @@ public class DeckBuilder : MonoBehaviour
     public List<GameObject> abilities3D = new List<GameObject>();
     public List<GameObject> shapes3D = new List<GameObject>();
 
+    [Header("POINT REFERENCES AND ACTUAL NUMBERS")]
     public TextMeshProUGUI pointsText;
     public GameObject pointsActualText;
     public GameObject pointsConfirmButton;
 
+    public int maxTokenNumber = 20;
     public int startPoints = 30;
     public int points = 0;
     
+    [Header("OBJ THAT SWITCH BETWEEN PICK AND EDIT")]
     public List<GameObject> canvasDeckBuilderObjects;
     public GameObject canvasDeckPicker;
 
@@ -45,6 +49,7 @@ public class DeckBuilder : MonoBehaviour
     {
         UpdatePoints();
         _deckInfoPanel = gameObject.GetComponent<DeckInfoPanel>();
+        Debug.Log(Application.persistentDataPath);
     }
     
     private Dictionary<string, int> shapeDict = new Dictionary<string, int>()
@@ -76,6 +81,8 @@ public class DeckBuilder : MonoBehaviour
     // create new token
     public void AddNewToken()
     {
+        if (tokens.Count > maxTokenNumber) return;
+        
         GameObject token = Instantiate(tokenInfoPrefab, tokenFitter.transform);
         
         TokenInfo ti = token.GetComponent<TokenInfo>();
@@ -96,6 +103,8 @@ public class DeckBuilder : MonoBehaviour
     
     public void AddNewToken (string shape, string ability)
     {
+        if (tokens.Count > maxTokenNumber) return;
+        
         GameObject token = Instantiate(tokenInfoPrefab, tokenFitter.transform);
         
         TokenInfo ti = token.GetComponent<TokenInfo>();
@@ -219,12 +228,14 @@ public class DeckBuilder : MonoBehaviour
         string[] infos = _deckInfoPanel.currentDeckInfo.deckInfoString.Split(':');
         _deckInfoPanel.currentDeckInfo.deckValidity = points == 0;
         Debug.LogWarning(finalOutcome);
+        _deckInfoPanel.SaveCurrentDeckInfo();
     }
 
     public void SaveDeckName()
     {
         _deckInfoPanel.currentDeckInfo.deckName = deckNameInputField.text;
         _deckInfoPanel.currentDeckInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _deckInfoPanel.currentDeckInfo.deckName;
+        SaveSystem.SaveData(new SaveFile(_deckInfoPanel.currentDeckInfo), _deckInfoPanel.currentDeckInfo.deckFileName);
     }
 
     public void OpenDeckBuilder()
